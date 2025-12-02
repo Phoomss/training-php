@@ -18,7 +18,21 @@
 </head>
 
 <body>
-    <a href="auth.php" class="btn btn-primary">authenticate</a>
+    <form method="POST" action="auth_api.php">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="role" name="role" placeholder="role" required><br>
+        <button type="submit" name="register">Register</button>
+    </form>
+
+    <form method="POST" action="auth_api.php">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit" name="login">Login</button>
+    </form>
+
+
     <!-- Bootstrap JavaScript Libraries -->
     <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

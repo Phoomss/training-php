@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             header('Location: index.php');
             exit();
-
         } catch (PDOException $e) {
 
             if ($e->getCode() == 23000) {
@@ -48,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             $stmt = $conn->prepare("SELECT * FROM auth WHERE username = :username");
             $stmt->bindParam(':username', $username);
-
             $stmt->execute();
+
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
@@ -58,13 +57,21 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role'] = $user['role'];
 
-                header("Location: dashboard.php");
-                exit();
+                if ($user['role'] === 'admin') {
+                    header("Location: user.php");
+                    exit();
+                }
 
+                if ($user['role'] === 'user') {
+                    header("Location: dashboard.php");
+                    exit();
+                }
+
+                echo "ไม่มีสิทธิ์เข้าใช้งานระบบนี้";
+                exit();
             } else {
                 $error = "Username หรือ Password ไม่ถูกต้อง!";
             }
-
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
