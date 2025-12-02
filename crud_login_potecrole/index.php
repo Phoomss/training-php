@@ -18,10 +18,18 @@
 </head>
 
 <body>
-    <form method="POST">
-        <input name="username" required>
-        <input type="password" name="password" required>
-        <button type="submit">Login</button>
+    <form method="POST" action="auth_api.php">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="role" name="role" placeholder="role" required><br>
+        <button type="submit" name="register">Register</button>
+    </form>
+
+    <form method="POST" action="auth_api.php">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit" name="login">Login</button>
     </form>
 
 
