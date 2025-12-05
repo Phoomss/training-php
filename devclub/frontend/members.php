@@ -2,15 +2,54 @@
 require_once "../configs/admin_only.php";
 require_once "../configs/connect.php";
 
-// ดึงข้อมูล members JOIN majors
+// SEARCH
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+$search_sql = "";
+$params = [];
+
+if ($search !== "") {
+    $search_sql = " AND (
+        m.firstname LIKE :kw 
+        OR m.lastname LIKE :kw
+        OR m.email LIKE :kw
+        OR mj.name LIKE :kw
+    )";
+    $params[':kw'] = "%$search%";
+}
+
+//    PAGINATION
+$limit = 10; // จำนวนรายการต่อหน้า
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = max($page, 1); // กันค่า 0 หรือ -1
+
+$offset = ($page - 1) * $limit;
+
+/* --- หาจำนวนข้อมูลทั้งหมด --- */
+$count_sql = "SELECT COUNT(*) 
+              FROM members m
+              LEFT JOIN majors mj ON m.major = mj.id
+              WHERE 1 $search_sql";
+
+$stmt_count = $conn->prepare($count_sql);
+$stmt_count->execute($params);
+$total_rows = $stmt_count->fetchColumn();
+
+$total_pages = ceil($total_rows / $limit);
+
+/* --- Query ข้อมูลจริง --- */
 $sql = "SELECT m.*, mj.name AS major_name 
         FROM members m 
-        LEFT JOIN majors mj ON m.major = mj.id 
-        ORDER BY m.id ASC";
+        LEFT JOIN majors mj ON m.major = mj.id
+        WHERE 1 $search_sql
+        ORDER BY m.id ASC
+        LIMIT $limit OFFSET $offset";
 
-$stmt = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+$stmt->execute($params);
 $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -55,6 +94,18 @@ $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="card shadow">
             <div class="card-body">
+                <form method="GET" class="mb-3">
+                    <div class="input-group">
+                        <input type="text"
+                            class="form-control"
+                            name="search"
+                            placeholder="ค้นหาชื่อ / อีเมล / สาขา"
+                            value="<?= htmlspecialchars($search) ?>">
+
+                        <button class="btn btn-outline-primary" type="submit">ค้นหา</button>
+                        <a href="members.php" class="btn btn-outline-secondary">ล้าง</a>
+                    </div>
+                </form>
 
                 <!-- ตารางแบบ responsive -->
                 <div class="table-responsive">
@@ -114,6 +165,39 @@ $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         </tbody>
                     </table>
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-3">
+
+                            <!-- Prev -->
+                            <li class="page-item <?= ($page <= 1 ? 'disabled' : '') ?>">
+                                <a class="page-link"
+                                    href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>">
+                                    ก่อนหน้า
+                                </a>
+                            </li>
+
+                            <!-- Numbers -->
+                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                                <li class="page-item <?= ($page == $i ? 'active' : '') ?>">
+                                    <a class="page-link"
+                                        href="?page=<?= $i ?>&search=<?= urlencode($search) ?>">
+                                        <?= $i ?>
+                                    </a>
+                                </li>
+                            <?php endfor; ?>
+
+                            <!-- Next -->
+                            <li class="page-item <?= ($page >= $total_pages ? 'disabled' : '') ?>">
+                                <a class="page-link"
+                                    href="?page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>">
+                                    ถัดไป
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+
                 </div>
 
             </div>
