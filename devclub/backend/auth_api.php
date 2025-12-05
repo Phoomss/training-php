@@ -4,6 +4,14 @@ require_once '../configs/connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if (isset($_POST['register'])) {
+
+        // Log ค่าที่รับจากฟอร์มก่อน
+        echo "<pre>";
+        echo "=== DEBUG INPUT ===\n";
+        print_r($_POST);
+        echo "====================\n";
+        echo "</pre>";
+
         $username = trim($_POST['username']);
         $password = $_POST['password'];
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -21,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             $stmt->execute();
 
-            header('Location: login.php');
+            header('Location: ../login.php');
             exit();
         } catch (PDOException $e) {
             if ($e->getCode() === 2300) {
@@ -49,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role'] = $user['role'];
 
-                if ($user['role'] === 'admin') {
+                if ($user['role'] === 'ADMIN') {
                     header("Location: ../frontend/index.php");
                     exit();
                 }

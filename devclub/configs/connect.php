@@ -3,7 +3,7 @@ $host = "localhost";
 $username = "root";
 $password = "";
 $db_name = "devclub";
-$charset = "uft8mb4";
+$charset = "utf8mb4"; 
 
 $dsn = "mysql:host=$host;dbname=$db_name;charset=$charset";
 
@@ -14,6 +14,7 @@ $options = [
 
 try {
     $conn = new PDO($dsn, $username, $password, $options);
+    // echo "Connected successfully";
 } catch (PDOException $e) {
     dir("Connection failed: " . $e->getMessage());
 }
