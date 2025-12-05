@@ -20,11 +20,11 @@
                     <a class="nav-link" href="./members.php">Members</a>
                 </li>
 
-                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "ADMIN"): ?>
+                <!-- <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "ADMIN"): ?>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="./admin/dashboard.php">Admin Panel</a>
+                    <a class="nav-link text-danger" href="./dashboard.php">Admin Panel</a>
                 </li>
-                <?php endif; ?>
+                <?php endif; ?> -->
             </ul>
 
             <!-- Right menu -->

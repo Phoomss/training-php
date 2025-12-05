@@ -20,6 +20,17 @@ $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>จัดการสมาชิก</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* ปุ่มแก้ไข / ลบบนหน้าจอมือถือให้เรียงลง */
+        @media (max-width: 576px) {
+            .btn-group-mobile {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -45,51 +56,65 @@ $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="card shadow">
             <div class="card-body">
 
-                <table class="table table-striped table-bordered align-middle">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>ชื่อ - นามสกุล</th>
-                            <th>Email</th>
-                            <th>สาขา</th>
-                            <th>ชั้นปี</th>
-                            <th width="140">จัดการ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <?php $counter = 1;
-                        foreach ($members as $m): ?>
+                <!-- ตารางแบบ responsive -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
                             <tr>
-                                <td><?= $counter ?></td>
-                                <td><?= htmlspecialchars($m['title'] . " " . $m['firstname'] . " " . $m['lastname']) ?></td>
-                                <td><?= htmlspecialchars($m['email']) ?></td>
-                                <td><?= htmlspecialchars($m['major_name'] ?? "-") ?></td>
-                                <td><?= htmlspecialchars($m['year']) ?></td>
-
-                                <td>
-                                    <a href="form_member.php?id=<?= $m['id'] ?>" class="btn btn-warning btn-sm">แก้ไข</a>
-
-                                    <a href="../backend/member_api.php?delete=<?= $m['id'] ?>"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('ยืนยันการลบสมาชิกนี้?');">
-                                        ลบ
-                                    </a>
-                                </td>
+                                <th>#</th>
+                                <th>ชื่อ - นามสกุล</th>
+                                <th>Email</th>
+                                <th>สาขา</th>
+                                <th>ชั้นปี</th>
+                                <th width="140">จัดการ</th>
                             </tr>
-                        <?php $counter++;
-                        endforeach; ?>
+                        </thead>
+                        <tbody>
 
-                        <?php if (count($members) === 0): ?>
-                            <tr>
-                                <td colspan="6" class="text-center text-muted py-3">
-                                    — ไม่มีข้อมูลสมาชิก —
-                                </td>
-                            </tr>
-                        <?php endif; ?>
+                            <?php
+                            $counter = 1;
+                            foreach ($members as $m): ?>
+                                <tr>
+                                    <td><?= $counter ?></td>
 
-                    </tbody>
-                </table>
+                                    <td><?= htmlspecialchars($m['title'] . " " . $m['firstname'] . " " . $m['lastname']) ?></td>
+
+                                    <td><?= htmlspecialchars($m['email']) ?></td>
+
+                                    <td><?= htmlspecialchars($m['major_name'] ?? "-") ?></td>
+
+                                    <td><?= htmlspecialchars($m['year']) ?></td>
+
+                                    <td>
+                                        <div class="btn-group-mobile">
+                                            <a href="form_member.php?id=<?= $m['id'] ?>"
+                                                class="btn btn-warning btn-sm w-100">
+                                                แก้ไข
+                                            </a>
+
+                                            <a href="../backend/member_api.php?delete=<?= $m['id'] ?>"
+                                                class="btn btn-danger btn-sm w-100"
+                                                onclick="return confirm('ยืนยันการลบสมาชิกนี้?');">
+                                                ลบ
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php
+                                $counter++;
+                            endforeach; ?>
+
+                            <?php if (count($members) === 0): ?>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-3">
+                                        — ไม่มีข้อมูลสมาชิก —
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>
