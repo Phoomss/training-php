@@ -66,9 +66,9 @@
                 เข้าสู่ระบบ
             </button>
 
-            <a href="register.php" class="btn btn-outline-light w-100 mt-3 py-2 text-dark bg-white">
+            <!-- <a href="register.php" class="btn btn-outline-light w-100 mt-3 py-2 text-dark bg-white">
                 สมัครสมาชิก
-            </a>
+            </a> -->
 
         </form>
 

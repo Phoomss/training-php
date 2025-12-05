@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
 
-        <a class="navbar-brand fw-bold" href="#">DevClub</a>
+        <a class="navbar-brand fw-bold" href="./index.php">DevClub</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
             data-bs-target="#navbarNav" aria-controls="navbarNav" 
@@ -20,11 +20,11 @@
                     <a class="nav-link" href="./members.php">Members</a>
                 </li>
 
-                <!-- <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "ADMIN"): ?>
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === "ADMIN"): ?>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="./dashboard.php">Admin Panel</a>
+                    <a class="nav-link" href="./users.php">Users</a>
                 </li>
-                <?php endif; ?> -->
+                <?php endif; ?>
             </ul>
 
             <!-- Right menu -->

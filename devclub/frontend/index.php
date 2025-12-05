@@ -59,7 +59,7 @@ require_once "../configs/connect.php";
                     <div class="card-body">
                         <h5 class="card-title">⚙️ ตั้งค่าระบบ</h5>
                         <p class="card-text text-muted">ตั้งค่าระบบพื้นฐานสำหรับผู้ดูแลระบบ</p>
-                        <a href="./settings.php" class="btn btn-secondary">ตั้งค่าระบบ</a>
+                        <a href="./settings.php" class="btn btn-primary">ตั้งค่าระบบ</a>
                     </div>
                 </div>
             </div>
