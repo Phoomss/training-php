@@ -1,86 +1,80 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>User Register</title>
 
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Login</title>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0d6efd, #6f42c1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: #ffffffdd;
+            backdrop-filter: blur(6px);
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .login-title {
+            font-weight: 700;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
-<div class="container py-5">
+    <div class="login-card">
 
-    <div class="card shadow mx-auto" style="max-width: 450px;">
-        <div class="card-body">
+        <h3 class="text-center mb-4 login-title">🔐 Login Account</h3>
 
-            <h3 class="text-center mb-4 fw-bold">Create Account</h3>
+        <form action="./backend/auth_api.php" method="POST">
 
-            <form action="./backend/auth_api.php" method="POST">
-
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        name="username" 
-                        placeholder="ชื่อผู้ใช้" 
-                        required minlength="4">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" class="form-control" name="username" placeholder="ชื่อผู้ใช้" required minlength="4">
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input 
-                        type="password" 
-                        class="form-control" 
-                        name="password" 
-                        placeholder="รหัสผ่าน" 
-                        required minlength="6">
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                    <input type="password" class="form-control" name="password" placeholder="รหัสผ่าน" required minlength="6">
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Confirm Password</label>
-                    <input 
-                        type="password" 
-                        class="form-control" 
-                        name="confirm_password" 
-                        placeholder="ยืนยันรหัสผ่าน" 
-                        required>
-                </div>
+            <button type="submit" name="login" class="btn btn-primary w-100 mt-3 py-2">
+                เข้าสู่ระบบ
+            </button>
 
-                <div class="mb-3">
-                    <label class="form-label">Role</label>
-                    <select class="form-select" name="role" required>
-                        <option value="">-- เลือกบทบาท --</option>
-                        <option value="USER">User</option>
-                        <option value="ADMIN">Admin</option>
-                    </select>
-                </div>
+            <a href="register.php" class="btn btn-outline-light w-100 mt-3 py-2 text-dark bg-white">
+                สมัครสมาชิก
+            </a>
 
-                <div class="d-grid">
-                    <button type="submit" name="register" class="btn btn-primary">สมัครสมาชิก</button>
-                </div>
+        </form>
 
-            </form>
-        </div>
     </div>
 
-</div>
-
-<script>
-document.querySelector("form").addEventListener("submit", function(e) {
-    const pass = document.querySelector('input[name="password"]').value;
-    const confirm = document.querySelector('input[name="confirm_password"]').value;
-
-    if (pass !== confirm) {
-        e.preventDefault();
-        alert("รหัสผ่านไม่ตรงกัน!");
-    }
-});
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
