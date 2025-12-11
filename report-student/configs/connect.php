@@ -3,8 +3,9 @@ $host="sql300.infinityfree.com";
 $username="if0_40638783";
 $password="It7H0dr1jA";
 $db_name="if0_40638783_report_activity_student";
+$charset = "utf8mb4"; 
 
-$dsn = "mysql:host=$host;dbname=$db_name;charset=utf8md4";
+$dsn = "mysql:host=$host;dbname=$db_name;charset=$charset";
 
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
