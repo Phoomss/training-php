@@ -1,9 +1,9 @@
 <?php
-$host="sql300.infinityfree.com";
-$username="if0_40638783";
-$password="It7H0dr1jA";
-$db_name="if0_40638783_report_activity_student";
-$charset = "utf8mb4"; 
+$host = "sql300.infinityfree.com";
+$username = "if0_40638783";
+$password = "It7H0dr1jA";
+$db_name = "if0_40638783_report_activity_student";
+$charset = "utf8mb4";
 
 $dsn = "mysql:host=$host;dbname=$db_name;charset=$charset";
 
@@ -14,8 +14,6 @@ $options = [
 
 try {
     $conn = new PDO($dsn, $username, $password, $options);
-    echo "Database Connection Successfully";
 } catch (PDOException $e) {
-    dir("Database Connection Failed: " . $e->getMessage());
+    die("Database Connection Failed: " . $e->getMessage());
 }
-?>

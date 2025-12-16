@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $stmt = $conn->prepare(
                 "INSERT INTO activites(activity_name, time, date)
-                VALUES (:activity_name, :tiem, :date)
+                VALUES (:activity_name, :time, :date)
                 "
             );
 
@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':date', $activity_date);
 
             $stmt->execute();
+            header('Location: ../frontend/admin/activites.php=' . urlencode("success"));
             exit();
         } catch (PDOException $e) {
 
@@ -34,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            header("Location: ../frontend/admin/activity.php?error=" . urlencode($errorMessage));
+            header("Location: ../frontend/admin/activites.php?error=" . urlencode($errorMessage));
             exit();
         }
     }
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt->execute();
 
-            header("Location: ../frontend/admin/activity.php?status=success");
+            header("Location: ../frontend/admin/activites.php?status=success");
             exit();
         } catch (PDOException $e) {
 
@@ -69,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            header("Location: ../frontend/admin/activity.php?error=" . urlencode($errorMessage));
+            header("Location: ../frontend/admin/activites.php?error=" . urlencode($errorMessage));
             exit();
         }
     }
@@ -80,7 +81,7 @@ if (isset($_GET['delete_activity'])) {
         $id = $_GET['delete_activity'];
 
         if (!is_numeric($id)) {
-            header("Location: ../frontend/admin/activity.php?error=" . urlencode("รหัสกิจกรรมไม่ถูกต้อง"));
+            header("Location: ../frontend/admin/activites.php?error=" . urlencode("รหัสกิจกรรมไม่ถูกต้อง"));
             exit();
         }
 
@@ -89,7 +90,7 @@ if (isset($_GET['delete_activity'])) {
 
         $stmt->execute();
 
-        header("Location: ../frontend/admin/activity.php?status=" . urlencode("success"));
+        header("Location: ../frontend/admin/activites.php?status=" . urlencode("success"));
         exit();
     } catch (PDOException $e) {
         $errorMessage = "ไม่สามารถลบข้อมูลได้";
@@ -99,7 +100,7 @@ if (isset($_GET['delete_activity'])) {
             $errorMessage = "ไม่สามารถลบข้อมูลได้ เพราะข้อมูลนี้เชื่อมกับตารางอื่นอยู่!";
         }
 
-        header('Location: ../frontend/admin/activity.php?error=' . urlencode($errorMessage));
+        header('Location: ../frontend/admin/activites.php?error=' . urlencode($errorMessage));
         exit();
     }
 }
