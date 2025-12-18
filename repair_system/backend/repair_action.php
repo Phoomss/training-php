@@ -51,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: ../frontend/student/repair.php?status=' . urlencode("เพิ่มรายการซ่อมเรียบร้อยแล้ว"));
             }
             exit();
-
         } catch (PDOException $e) {
             // Redirect based on user role for error
             $referrer = $_SERVER['HTTP_REFERER'] ?? '';
@@ -137,7 +136,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: ../frontend/student/repair.php?status=' . urlencode("แก้ไขรายการซ่อมเรียบร้อยแล้ว"));
             }
             exit();
-
         } catch (PDOException $e) {
             // Redirect based on user role for error
             $referrer = $_SERVER['HTTP_REFERER'] ?? '';
@@ -190,7 +188,6 @@ if (isset($_GET['delete_repair'])) {
             header('Location: ../frontend/student/repair.php?status=' . urlencode("ลบรายการซ่อมเรียบร้อยแล้ว"));
         }
         exit();
-
     } catch (PDOException $e) {
         // Redirect based on user role for error
         $referrer = $_SERVER['HTTP_REFERER'] ?? '';
@@ -211,4 +208,3 @@ if (isset($_GET['delete_repair'])) {
         exit();
     }
 }
-?>
