@@ -45,24 +45,24 @@
 
                 <form action="backend/auth_action.php" method="post">
                     <div class="mb-3">
-                        <label for="" class="form-label">Username</label>
+                        <label for="username" class="form-label">Username</label>
                         <input
                             type="text"
                             class="form-control"
                             name="username"
-                            id="usernae"
+                            id="username"
                             required
                             aria-describedby=""
                             placeholder="ชื่อผู้ใช้" />
                     </div>
                     <div class="mb-3">
-                        <label for="" class="form-label">Password</label>
+                        <label for="password" class="form-label">Password</label>
                         <input
                             type="password"
                             class="form-control"
                             min="4"
                             name="password"
-                            id="pssword"
+                            id="password"
                             required
                             placeholder="รหัสผ่าน" />
                     </div>

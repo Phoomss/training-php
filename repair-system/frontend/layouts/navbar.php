@@ -24,10 +24,10 @@ $role = $_SESSION['role'] ?? null;
                 <!-- ADMIN -->
                 <?php if ($role === 'admin'): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="../admin/equipment.php">เพิ่มอุปกรณ์</a>
+                        <a class="nav-link" href="/frontend/admin/equipment.php">จัดการอุปกรณ์</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/frontend/admin/repairs.php">สถานะการซ่อม</a>
+                        <a class="nav-link" href="/frontend/admin/repair.php">สถานะการซ่อม</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/frontend/admin/report.php">รายงานแจ้งซ่อม</a>

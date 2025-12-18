@@ -12,13 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $auth_id = intval($_POST['auth_id']);
 
             $stmt = $conn->prepare("
-            INSERT INO technical (title, firstname, lastname, phone, auth_id) VALUES (:title, :firstname, :lastname, :phone, :auth_id)");
+            INSERT INTO technical (title, firstname, lastname, phone, auth_id) VALUES (:title, :firstname, :lastname, :phone, :auth_id)");
 
             $stmt->execute([
                 ':title' => $title,
                 ':firstname' => $firstname,
                 ':lastname' => $lastname,
-                'phone' => $phone,
+                ':phone' => $phone,
                 ':auth_id' => $auth_id
             ]);
 
@@ -39,11 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_technical'])) {
         try {
             $stmt = $conn->prepare(
-                "UPDATE technical SET title = :title
+                "UPDATE technical SET
+                title = :title,
                 firstname = :firstname,
                 lastname = :lastname,
-                phone = :phone,
-                 WHERE id = :id"
+                phone = :phone
+                WHERE id = :id"
             );
 
             $stmt->execute([

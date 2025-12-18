@@ -33,18 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_repair'])) {
         try {
             $student_id  = intval($_POST['student_id']);
-            $equiment_id = intval($_POST['equiment_id']);
+            $equipment_id = intval($_POST['equipment_id']);
             $details     = trim($_POST['details']);
             $image       = uploadImage($_FILES['image']);
 
             $stmt = $conn->prepare("
-            INSERT INTO repair (student_id, equiment_id, details, image)
-            VALUES (:student_id, :equiment_id, :details, :image)
+            INSERT INTO repair (student_id, equipment_id, details, image)
+            VALUES (:student_id, :equipment_id, :details, :image)
         ");
 
             $stmt->execute([
                 ':student_id'  => $student_id,
-                ':equiment_id' => $equiment_id,
+                ':equipment_id' => $equipment_id,
                 ':details'     => $details,
                 ':image'       => $image
             ]);
@@ -61,8 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $id           = intval($_POST['id']);
             $student_id   = intval($_POST['student_id']);
-            $equiment_id  = intval($_POST['equiment_id']);
+            $equipment_id  = intval($_POST['equipment_id']);
             $details      = trim($_POST['details']);
+            $status       = $_POST['status'] ?? 'pending';
+            $technical_id = !empty($_POST['technical_id']) ? intval($_POST['technical_id']) : null;
 
             // ดึงรูปเก่า
             $stmt_old = $conn->prepare("SELECT image FROM repair WHERE id = :id");
@@ -71,15 +73,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $old_image = $old['image'] ?? null;
 
             $sql = "
-            UPDATE repair 
-            SET student_id=:student_id, equiment_id=:equiment_id, details=:details
+            UPDATE repair
+            SET student_id=:student_id, equipment_id=:equipment_id, details=:details,
+                status=:status, technical_id=:technical_id
         ";
 
             $params = [
-                ':student_id'  => $student_id,
-                ':equiment_id' => $equiment_id,
-                ':details'     => $details,
-                ':id'          => $id
+                ':student_id'    => $student_id,
+                ':equipment_id'   => $equipment_id,
+                ':details'       => $details,
+                ':status'        => $status,
+                ':technical_id'  => $technical_id,
+                ':id'            => $id
             ];
 
             // ถ้ามีอัปโหลดรูปใหม่
@@ -99,18 +104,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare($sql);
             $stmt->execute($params);
 
-            header("Location: ../frontend/student/repair.php?status=" . urlencode("แก้ไขข้อมูลเสร็จสิ้น"));
+            header("Location: ../frontend/admin/index.php?status=" . urlencode("แก้ไขข้อมูลเสร็จสิ้น"));
             exit();
         } catch (Exception $e) {
-            header("Location: ../frontend/student/repair.php?error=" . urlencode($e->getMessage()));
+            header("Location: ../frontend/admin/form_repair.php?id=" . $id . "&error=" . urlencode($e->getMessage()));
             exit();
         }
     }
 }
 
-if (isset($_GET['delete_repair'])) {
+if (isset($_GET['delete'])) {
     try {
-        $id = intval($_GET['delete_repair']);
+        $id = intval($_GET['delete']);
         if ($id <= 0) {
             throw new Exception("ID ไม่ถูกต้อง");
         }
@@ -127,10 +132,10 @@ if (isset($_GET['delete_repair'])) {
             unlink(__DIR__ . '/../' . $old_image);
         }
 
-        header("Location: ../frontend/student/repair.php?status=" . urlencode("ลบข้อมูลเสร็จสิ้น"));
+        header("Location: ../frontend/admin/index.php?status=" . urlencode("ลบข้อมูลเสร็จสิ้น"));
         exit();
     } catch (Exception $e) {
-        header("Location: ../frontend/student/repair.php?error=" . urlencode($e->getMessage()));
+        header("Location: ../frontend/admin/index.php?error=" . urlencode($e->getMessage()));
         exit();
     }
 }

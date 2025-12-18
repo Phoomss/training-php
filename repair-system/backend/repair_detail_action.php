@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $repair_id = intval($_POST['repair_id']);
             $technical_id = intval($_POST['technical_id']);
-            $status = $_POST['status'];
+            $status = $_POST['status'] ?? 'รอซ่อม';
 
             $allowed_status = ["รอซ่อม", "กำลังซ่อม", "เสร็จสิ้น"];
 
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $allowed_status = ["รอซ่อม", "กำลังซ่อม", "เสร็จสิ้น"];
 
             $stmt = $conn->prepare(
-                "UPDATE repair_detail SET repari_id =:repair_id, techninal_id =: technical_id, status =:status WHERE id =:id"
+                "UPDATE repair_detail SET repair_id =:repair_id, technical_id =:technical_id, status =:status WHERE id =:id"
             );
 
             $stmt->execute([

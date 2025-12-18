@@ -55,9 +55,28 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 ]);
             }
 
+            if ($role === 'technical') {
+
+                $title = $_POST['title'];
+                $firstname = $_POST['firstname'];
+                $lastname = $_POST['lastname'];
+                $phone = $_POST['phone'];
+
+                $stmt_student = $conn->prepare("
+                    INSERT INTO student (title, firstname, lastname, phone, auth_id)
+                    VALUES (:title, :firstname, :lastname, :phone, :auth_id)
+                ");
+
+                $stmt_student->execute([
+                    ':title' => $title,
+                    ':firstname' => $firstname,
+                    ':lastname' => $lastname,
+                    ':phone' => $phone,
+                    ':auth_id' => $auth_id
+                ]);
+            }
             header("Location: ../index.php?status=" . urlencode('สมัครสมาชิกสำเร็จ'));
             exit();
-
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
                 header('Location: ../register.php?error=' . urlencode('ชื่อผู้ใช้งานนี้มีอยู่แล้ว'));
@@ -108,7 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 header('Location: ../index.php?error=' . urlencode('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง'));
                 exit();
             }
-
         } catch (PDOException $e) {
             die("Error: " . $e->getMessage());
         }

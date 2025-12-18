@@ -12,13 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $auth_id = intval($_POST['auth_id']);
 
             $stmt = $conn->prepare("
-            INSERT INO student (title, firstname, lastname, student_id, auth_id) VALUES (:title, :firstname, :lastname, :student_id, :auth_id)");
+            INSERT INTO student (title, firstname, lastname, student_id, auth_id) VALUES (:title, :firstname, :lastname, :student_id, :auth_id)");
 
             $stmt->execute([
                 ':title' => $title,
                 ':firstname' => $firstname,
                 ':lastname' => $lastname,
-                'student_id' => $student_id,
+                ':student_id' => $student_id,
                 ':auth_id' => $auth_id
             ]);
 
@@ -39,11 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update_student'])) {
         try {
             $stmt = $conn->prepare(
-                "UPDATE student SET title = :title
+                "UPDATE student SET
+                title = :title,
                 firstname = :firstname,
                 lastname = :lastname,
-                student_id = :student_id,
-                 WHERE id = :id"
+                student_id = :student_id
+                WHERE id = :id"
             );
 
             $stmt->execute([
