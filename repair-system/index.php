@@ -1,7 +1,3 @@
-<?php 
-
-?>
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -22,7 +18,7 @@
         />
     </head>
 
-    <body class="bg-info-subtle">
+    <body class="bg-primary-subtle">
         <header>
             <!-- place navbar here -->
         </header>

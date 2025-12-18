@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-info-subtle">
+<body class="bg-primary-subtle">
 
 <main class="d-flex justify-content-center align-items-center vh-100">
     <div class="card p-5 col-12 col-md-6 col-lg-4 shadow">
