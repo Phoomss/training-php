@@ -15,23 +15,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("สถานะไม่ถูกต้อง");
             }
 
-            // Update repair status
-            $stmt = $conn->prepare("UPDATE repair SET status = ? WHERE id = ?");
-            $stmt->execute([$status, $repair_id]);
+            // Note: The repair table doesn't have a status column
+            // Status is tracked in the repair_detail table only
 
             // Insert repair detail record
             $stmt = $conn->prepare("INSERT INTO repair_detail (repair_id, technical_id, status) VALUES (?, ?, ?)");
             $stmt->execute([$repair_id, $technical_id, $status]);
 
             // Redirect back to the repair view
-            header("Location: ../frontend/technical/view_repair.php?id=" . $repair_id . "&status=" . urlencode("อัปเดตสถานะเรียบร้อยแล้ว"));
+            if (isset($_POST['from_technical']) && $_POST['from_technical'] == 'true') {
+                header("Location: ../frontend/technical/view_repair.php?id=" . $repair_id . "&status=" . urlencode("อัปเดตสถานะเรียบร้อยแล้ว"));
+            } else {
+                header("Location: ../frontend/technical/view_repair.php?id=" . $repair_id . "&status=" . urlencode("อัปเดตสถานะเรียบร้อยแล้ว"));
+            }
             exit();
         } catch (PDOException $e) {
             $error = "อัปเดตสถานะไม่สำเร็จ: " . $e->getMessage();
-            header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($error));
+            if (isset($_POST['from_technical']) && $_POST['from_technical'] == 'true') {
+                header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($error));
+            } else {
+                header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($error));
+            }
             exit();
         } catch (Exception $e) {
-            header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($e->getMessage()));
+            if (isset($_POST['from_technical']) && $_POST['from_technical'] == 'true') {
+                header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($e->getMessage()));
+            } else {
+                header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($e->getMessage()));
+            }
             exit();
         }
     }
