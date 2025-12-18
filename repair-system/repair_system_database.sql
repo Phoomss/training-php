@@ -54,7 +54,7 @@ CREATE TABLE repair (
     equipment_id INT NOT NULL,
     details TEXT NOT NULL,
     image VARCHAR(255),
-    status ENUM('pending', 'in_progress', 'completed', 'rejected') DEFAULT 'pending',
+    status ENUM('รอซ่อม', 'กำลังซ้อม', 'เสร็จสิ้น') DEFAULT 'รอซ่อม',
     technical_id INT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
