@@ -63,9 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $student_id   = intval($_POST['student_id']);
             $equipment_id  = intval($_POST['equipment_id']);
             $details      = trim($_POST['details']);
-            $status       = $_POST['status'] ?? 'pending';
-            $technical_id = !empty($_POST['technical_id']) ? intval($_POST['technical_id']) : null;
-
             // ดึงรูปเก่า
             $stmt_old = $conn->prepare("SELECT image FROM repair WHERE id = :id");
             $stmt_old->execute([':id' => $id]);
@@ -75,15 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = "
             UPDATE repair
             SET student_id=:student_id, equipment_id=:equipment_id, details=:details,
-                status=:status, technical_id=:technical_id
         ";
 
             $params = [
                 ':student_id'    => $student_id,
                 ':equipment_id'   => $equipment_id,
                 ':details'       => $details,
-                ':status'        => $status,
-                ':technical_id'  => $technical_id,
                 ':id'            => $id
             ];
 

@@ -54,13 +54,10 @@ CREATE TABLE repair (
     equipment_id INT NOT NULL,
     details TEXT NOT NULL,
     image VARCHAR(255),
-    status ENUM('รอซ่อม', 'กำลังซ้อม', 'เสร็จสิ้น') DEFAULT 'รอซ่อม',
-    technical_id INT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES student(id) ON DELETE RESTRICT,
-    FOREIGN KEY (equipment_id) REFERENCES equipment(id) ON DELETE RESTRICT,
-    FOREIGN KEY (technical_id) REFERENCES technical(id) ON DELETE SET NULL
+    FOREIGN KEY (equipment_id) REFERENCES equipment(id) ON DELETE RESTRICT
 );
 
 -- Table for repair process details
@@ -74,16 +71,6 @@ CREATE TABLE repair_detail (
     FOREIGN KEY (repair_id) REFERENCES repair(id) ON DELETE CASCADE,
     FOREIGN KEY (technical_id) REFERENCES technical(id) ON DELETE RESTRICT
 );
-
--- Indexes for better performance
-CREATE INDEX idx_repair_status ON repair(status);
-CREATE INDEX idx_repair_student ON repair(student_id);
-CREATE INDEX idx_repair_equipment ON repair(equipment_id);
-CREATE INDEX idx_repair_technical ON repair(technical_id);
-CREATE INDEX idx_repair_detail_repair ON repair_detail(repair_id);
-CREATE INDEX idx_repair_detail_technical ON repair_detail(technical_id);
-
--- Insert sample data
 
 -- Insert sample users into auth table
 INSERT INTO auth (username, password, role) VALUES
@@ -117,11 +104,11 @@ INSERT INTO equipment (name) VALUES
 ('กล้องถ่ายรูป');
 
 -- Insert sample repair requests
-INSERT INTO repair (student_id, equipment_id, details, image, status, technical_id) VALUES
-(1, 1, 'โปรเจคเตอร์ไม่ติด ไฟไม่เขียว', 'upload/repair/proj1.jpg', 'pending', NULL),
-(1, 3, 'เครื่องพิมพ์พิมพ์ไม่ออก สีจาง', 'upload/repair/printer1.jpg', 'in_progress', 1),
-(2, 2, 'เครื่องคอมพิวเตอร์ค้างตลอดเวลา', 'upload/repair/pc1.jpg', 'completed', 2),
-(2, 4, 'เครื่องเสียงไม่มีเสียงตอนเช้า', 'upload/repair/sound1.jpg', 'pending', NULL);
+INSERT INTO repair (student_id, equipment_id, details, image) VALUES
+(1, 1, 'โปรเจคเตอร์ไม่ติด ไฟไม่เขียว', 'upload/repair/proj1.jpg'),
+(1, 3, 'เครื่องพิมพ์พิมพ์ไม่ออก สีจาง', 'upload/repair/printer1.jpg'),
+(2, 2, 'เครื่องคอมพิวเตอร์ค้างตลอดเวลา', 'upload/repair/pc1.jpg'),
+(2, 4, 'เครื่องเสียงไม่มีเสียงตอนเช้า', 'upload/repair/sound1.jpg');
 
 -- Insert sample repair details
 INSERT INTO repair_detail (repair_id, technical_id, status) VALUES

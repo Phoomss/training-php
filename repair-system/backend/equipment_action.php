@@ -2,30 +2,12 @@
 require_once('../configs/connect.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Add new equipment
-    if (isset($_POST['add_equipment'])) {
-        $name = trim($_POST['name']);
+    // Determine if this is an update or insert based on whether an id is present
+    $name = trim($_POST['name']);
 
-        try {
-            $stmt = $conn->prepare("INSERT INTO equipment (name) VALUES (:name)");
-            $stmt->execute([':name' => $name]);
-
-            header("Location: ../frontend/admin/equipment.php?status=" . urlencode("เพิ่มอุปกรณ์เสร็จสิ้น"));
-            exit();
-        } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                header("Location: ../frontend/admin/form_equipment.php?error=" . urlencode("ชื่ออุปกรณ์นี้มีอยู่แล้ว"));
-            } else {
-                header("Location: ../frontend/admin/form_equipment.php?error=" . urlencode("เกิดข้อผิดพลาดในการเพิ่มอุปกรณ์"));
-            }
-            exit();
-        }
-    }
-
-    // Update existing equipment
-    if (isset($_POST['update_equipment'])) {
+    if (isset($_POST['id'])) {
+        // Update existing equipment
         $id = intval($_POST['id']);
-        $name = trim($_POST['name']);
 
         try {
             $stmt = $conn->prepare("UPDATE equipment SET name = :name WHERE id = :id");
@@ -38,6 +20,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: ../frontend/admin/form_equipment.php?id=" . $id . "&error=" . urlencode("ชื่ออุปกรณ์นี้มีอยู่แล้ว"));
             } else {
                 header("Location: ../frontend/admin/form_equipment.php?id=" . $id . "&error=" . urlencode("เกิดข้อผิดพลาดในการแก้ไขอุปกรณ์"));
+            }
+            exit();
+        }
+    } else {
+        // Add new equipment (no id provided)
+        try {
+            $stmt = $conn->prepare("INSERT INTO equipment (name) VALUES (:name)");
+            $stmt->execute([':name' => $name]);
+
+            header("Location: ../frontend/admin/equipment.php?status=" . urlencode("เพิ่มอุปกรณ์เสร็จสิ้น"));
+            exit();
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                header("Location: ../frontend/admin/form_equipment.php?error=" . urlencode("ชื่ออุปกรณ์นี้มีอยู่แล้ว"));
+            } else {
+                header("Location: ../frontend/admin/form_equipment.php?error=" . urlencode("เกิดข้อผิดพลาดในการเพิ่มอุปกรณ์"));
             }
             exit();
         }

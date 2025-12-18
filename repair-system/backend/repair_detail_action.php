@@ -2,6 +2,41 @@
 require_once '../configs/connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Handle status update from technical staff
+    if (isset($_POST['update_status'])) {
+        try {
+            $repair_id = intval($_POST['repair_id']);
+            $technical_id = intval($_POST['technical_id']);
+            $status = $_POST['status'];
+
+            // Validate status
+            $allowed_status = ["รอซ่อม", "กำลังซ่อม", "เสร็จสิ้น"];
+            if (!in_array($status, $allowed_status)) {
+                throw new Exception("สถานะไม่ถูกต้อง");
+            }
+
+            // Update repair status
+            $stmt = $conn->prepare("UPDATE repair SET status = ? WHERE id = ?");
+            $stmt->execute([$status, $repair_id]);
+
+            // Insert repair detail record
+            $stmt = $conn->prepare("INSERT INTO repair_detail (repair_id, technical_id, status) VALUES (?, ?, ?)");
+            $stmt->execute([$repair_id, $technical_id, $status]);
+
+            // Redirect back to the repair view
+            header("Location: ../frontend/technical/view_repair.php?id=" . $repair_id . "&status=" . urlencode("อัปเดตสถานะเรียบร้อยแล้ว"));
+            exit();
+        } catch (PDOException $e) {
+            $error = "อัปเดตสถานะไม่สำเร็จ: " . $e->getMessage();
+            header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($error));
+            exit();
+        } catch (Exception $e) {
+            header('Location: ../frontend/technical/view_repair.php?id=' . $repair_id . '&error=' . urlencode($e->getMessage()));
+            exit();
+        }
+    }
+
+    // Handle admin functions
     if (isset($_POST['add_repair_detail'])) {
         try {
             $repair_id = intval($_POST['repair_id']);
@@ -11,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $allowed_status = ["รอซ่อม", "กำลังซ่อม", "เสร็จสิ้น"];
 
             $stmt = $conn->prepare(
-                "INSERT INTO repair_detail (repair_id, technical_id, status) 
+                "INSERT INTO repair_detail (repair_id, technical_id, status)
                 VALUES (:repair_id, :technical_id, :status)"
             );
 
