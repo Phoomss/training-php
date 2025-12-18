@@ -74,20 +74,46 @@
                             min="4"
                             name="confirm_password"
                             required
-                            placeholder="ยืนยะนรหัสผ่าน" />
+                            placeholder="ยืนยันรหัสผ่าน" />
                     </div>
                     <div class="mb-3">
-                        <label for="" class="form-label">Role</label>
+                        <label for="role" class="form-label">Role</label>
                         <select
                             class="form-select form-select-lg"
                             name="role"
                             id="role"
-                            required>
+                            required
+                            onchange="toggleProfileFields()">
+                            <option value="">-- เลือกบทบาท --</option>
                             <option value="admin">admin</option>
                             <option value="student">student</option>
-                            <option value="technical">technical</option>
                         </select>
                     </div>
+
+                    <!-- Student Profile Fields -->
+                    <div id="student-fields" class="d-none">
+                        <div class="mb-3">
+                            <label for="student_title" class="form-label">คำนำหน้าชื่อ</label>
+                            <select class="form-select" name="title" id="student_title">
+                                <option value="นาย">นาย</option>
+                                <option value="นาง">นาง</option>
+                                <option value="นางสาว">นางสาว</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="student_firstname" class="form-label">ชื่อ</label>
+                            <input type="text" class="form-control" name="firstname" id="student_firstname" placeholder="กรุณากรอกชื่อ">
+                        </div>
+                        <div class="mb-3">
+                            <label for="student_lastname" class="form-label">นามสกุล</label>
+                            <input type="text" class="form-control" name="lastname" id="student_lastname" placeholder="กรุณากรอกนามสกุล">
+                        </div>
+                        <div class="mb-3">
+                            <label for="student_id" class="form-label">รหัสนักศึกษา</label>
+                            <input type="text" class="form-control" name="student_id" id="student_id" placeholder="กรุณากรอกรหัสนักศึกษา">
+                        </div>
+                    </div>
+
 
                     <div>
                         <button
@@ -97,6 +123,40 @@
                         </button>
                     </div>
                 </form>
+
+                <script>
+                    function toggleProfileFields() {
+                        const role = document.getElementById('role').value;
+                        const studentFields = document.getElementById('student-fields');
+
+                        // Hide student fields initially
+                        studentFields.classList.add('d-none');
+
+                        // Show fields based on selected role
+                        if (role === 'student') {
+                            studentFields.classList.remove('d-none');
+                        }
+                    }
+
+                    // Form validation
+                    document.querySelector('form').addEventListener('submit', function(e) {
+                        const role = document.getElementById('role').value;
+
+                        if (role === 'student') {
+                            // Validate student fields
+                            const student_title = document.getElementById('student_title').value;
+                            const student_firstname = document.getElementById('student_firstname').value;
+                            const student_lastname = document.getElementById('student_lastname').value;
+                            const student_id = document.getElementById('student_id').value;
+
+                            if (!student_title || !student_firstname || !student_lastname || !student_id) {
+                                e.preventDefault();
+                                alert('กรุณากรอกข้อมูลนักศึกษาให้ครบถ้วน');
+                                return false;
+                            }
+                        }
+                    });
+                </script>
                 <a href="index.php">เข้าสู่ระบบ</a>
             </div>
         </div>

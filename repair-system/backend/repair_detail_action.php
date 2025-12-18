@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':status' => $status
             ]);
 
-            header("Location: ../frontend/admin/repair_detail.php?status=" . urldecode("เพิ่มข้อมูลเสร็จสิ้น"));
+            header("Location: ../frontend/admin/repair_detail.php?status=" . urlencode("เพิ่มข้อมูลเสร็จสิ้น"));
             exit();
         } catch (PDOException $e) {
             $error = "เพิ่มข้อมูลไม่สำเร็จ: " . $e->getMessage();
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':id' => $id
             ]);
 
-            header("Location: ../frontend/admin/repair_detail.php?status=" . urldecode("แก้ไขข้อมูลเสร็จสิ้น"));
+            header("Location: ../frontend/admin/repair_detail.php?status=" . urlencode("แก้ไขข้อมูลเสร็จสิ้น"));
             exit();
         } catch (PDOException $e) {
             $error = "แก้ไขข้อมูลไม่สำเร็จ: " . $e->getMessage();
@@ -75,7 +75,7 @@ if (isset($_GET['delete_repair_detail'])) {
         $stmt = $conn->prepare("DELETE FROM repair_detail WHERE id = :id");
         $stmt->execute([":id" => $id]);
 
-        header("Location: ../frontend/admin/repair_detail.php?status=" . urldecode("ลบข้อมูลเสร็จสิ้น"));
+        header("Location: ../frontend/admin/repair_detail.php?status=" . urlencode("ลบข้อมูลเสร็จสิ้น"));
         exit();
     } catch (PDOException $e) {
         $error = "ลบข้อมูลไม่สำเร็จ: " . $e->getMessage();

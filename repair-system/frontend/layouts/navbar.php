@@ -4,7 +4,7 @@ $role = $_SESSION['role'] ?? null;
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="#">Repair System</a>
+        <a class="navbar-brand fw-bold" href="/index.php">Repair System</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarRepair" aria-controls="navbarRepair"
@@ -17,12 +17,18 @@ $role = $_SESSION['role'] ?? null;
 
                 <!-- ADMIN -->
                 <?php if ($role === 'admin'): ?>
-                    <!-- ทุก role เห็น -->
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/index.php">หน้าแรก</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/equipment.php">จัดการอุปกรณ์</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
+                            จัดการข้อมูล
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../admin/equipment.php">จัดการอุปกรณ์</a></li>
+                            <li><a class="dropdown-item" href="../admin/students.php">จัดการนักศึกษา</a></li>
+                            <li><a class="dropdown-item" href="../admin/technicals.php">จัดการช่างเทคนิค</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../admin/repair.php">สถานะการซ่อม</a>

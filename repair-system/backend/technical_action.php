@@ -2,6 +2,12 @@
 require_once '../configs/connect.php';
 session_start();
 
+// Admin only access
+if (!isset($_SESSION['auth_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../../index.php?error=' . urlencode('คุณไม่มีสิทธิ์ในการเข้าถึงหน้านี้'));
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_technical'])) {
         try {
@@ -22,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':auth_id' => $auth_id
             ]);
 
-            header("Location: ../frontend/technical/index.php?status=" . urldecode("เพิ่มข้อมูลเสร็จสิ้น"));
+            header("Location: ../frontend/admin/index.php?status=" . urlencode("เพิ่มข้อมูลเสร็จสิ้น"));
             exit();
         } catch (PDOException $e) {
             $errorMessage = "เพิ่มข้อมูลไม่สำเร็จ";
@@ -31,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errorMessage = "auth ซ้ำ / auth ไม่ถูกต้อง";
             }
 
-            header("Location: ../frontend/technical/form_technical.php?error=" . urlencode($errorMessage));
+            header("Location: ../frontend/admin/technicals.php?error=" . urlencode($errorMessage));
             exit();
         }
     }
@@ -64,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errorMessage = "ข้อมูลนี้เชื่อมกับตารางอื่นอยู่";
             }
 
-            header("Location: ../frontend/technical/form_technical.php?error=" . urlencode($errorMessage));
+            header("Location: ../frontend/admin/technicals.php?error=" . urlencode($errorMessage));
             exit();
         }
     }
@@ -78,7 +84,7 @@ if (isset($_GET['delete_technical'])) {
             "DELETE FROM technical WHERE id = :id"
         );
         $stmt->execute([':id' => $id]);
-        header("Location: ../frontend/technical/index.php?status=" . urldecode("ลบข้อมูลเสร็จสิ้น"));
+        header("Location: ../frontend/admin/index.php?status=" . urlencode("ลบข้อมูลเสร็จสิ้น"));
     } catch (PDOException $e) {
         $errorMessage = "ไม่สามารถลบข้อมูลได้";
 
@@ -86,7 +92,7 @@ if (isset($_GET['delete_technical'])) {
             $errorMessage = "ไม่สามารถลบได้ เพราะข้อมูลนี้เชื่อมกับตารางอื่น";
         }
 
-        header("Location: ../frontend/technical/index.php?error=" . urlencode($errorMessage));
+        header("Location: ../frontend/admin/index.php?error=" . urlencode($errorMessage));
         exit();
     }
 }

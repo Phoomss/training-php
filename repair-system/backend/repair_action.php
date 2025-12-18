@@ -49,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':image'       => $image
             ]);
 
-            header("Location: ../frontend/student/repair.php?status=" . urlencode("เพิ่มข้อมูลเสร็จสิ้น"));
+            header("Location: ../frontend/student/my-repairs.php?status=" . urlencode("แจ้งซ่อมเสร็จสิ้น"));
             exit();
         } catch (Exception $e) {
-            header("Location: ../frontend/student/repair.php?error=" . urlencode($e->getMessage()));
+            header("Location: ../frontend/student/create-repair.php?error=" . urlencode($e->getMessage()));
             exit();
         }
     }
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: ../frontend/admin/index.php?status=" . urlencode("แก้ไขข้อมูลเสร็จสิ้น"));
             exit();
         } catch (Exception $e) {
-            header("Location: ../frontend/admin/form_repair.php?id=" . $id . "&error=" . urlencode($e->getMessage()));
+            header("Location: ../frontend/technical/process_repair.php?id=" . $id . "&error=" . urlencode($e->getMessage()));
             exit();
         }
     }
