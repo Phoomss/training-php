@@ -52,7 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: ../frontend/student/repair.php?status=" . urlencode("เพิ่มข้อมูลเสร็จสิ้น"));
             exit();
         } catch (Exception $e) {
-            header("Location: ../frontend/student/repair.php?error=" . urlencode($e->getMessage()));
+            // ตรวจสอบว่าผู้ใช้มาจากหน้าใดเพื่อ redirect กลับไปหน้าที่เหมาะสม
+            if (isset($_POST['from_student']) && $_POST['from_student'] == 'true') {
+                header("Location: ../frontend/student/form_repair.php?error=" . urlencode($e->getMessage()));
+            } else {
+                header("Location: ../frontend/student/repair.php?error=" . urlencode($e->getMessage()));
+            }
             exit();
         }
     }
@@ -98,10 +103,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare($sql);
             $stmt->execute($params);
 
-            header("Location: ../frontend/admin/index.php?status=" . urlencode("แก้ไขข้อมูลเสร็จสิ้น"));
+            // ตรวจสอบว่าผู้ใช้มาจากหน้าใดเพื่อ redirect กลับไปหน้าที่เหมาะสม
+            if (isset($_POST['from_student']) && $_POST['from_student'] == 'true') {
+                header("Location: ../frontend/student/index.php?status=" . urlencode("แก้ไขข้อมูลเสร็จสิ้น"));
+            } else {
+                header("Location: ../frontend/admin/index.php?status=" . urlencode("แก้ไขข้อมูลเสร็จสิ้น"));
+            }
             exit();
         } catch (Exception $e) {
-            header("Location: ../frontend/admin/form_repair.php?id=" . $id . "&error=" . urlencode($e->getMessage()));
+            // ตรวจสอบว่าผู้ใช้มาจากหน้าใดเพื่อ redirect กลับไปหน้าที่เหมาะสม
+            if (isset($_POST['from_student']) && $_POST['from_student'] == 'true') {
+                header("Location: ../frontend/student/form_repair.php?id=" . $id . "&error=" . urlencode($e->getMessage()));
+            } else {
+                header("Location: ../frontend/admin/form_repair.php?id=" . $id . "&error=" . urlencode($e->getMessage()));
+            }
             exit();
         }
     }

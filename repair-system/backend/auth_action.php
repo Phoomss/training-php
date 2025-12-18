@@ -69,19 +69,32 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     /* ================= LOGIN ================= */
     if (isset($_POST['login'])) {
 
-        $username = trim($_POST['username']);
+        $input = trim($_POST['username']); // This can be username or student_id
         $password = $_POST['password'];
 
         try {
+            // First, try to find by username in auth table
             $stmt = $conn->prepare("
                 SELECT id, username, password, role
                 FROM auth
-                WHERE username = :username
+                WHERE username = :input
                 LIMIT 1
             ");
-            $stmt->execute([':username' => $username]);
-
+            $stmt->execute([':input' => $input]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // If not found and the role might be student, also check student_id
+            if (!$user) {
+                $stmt = $conn->prepare("
+                    SELECT a.id, a.username, a.password, a.role
+                    FROM auth a
+                    JOIN student s ON a.id = s.auth_id
+                    WHERE s.student_id = :input
+                    LIMIT 1
+                ");
+                $stmt->execute([':input' => $input]);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            }
 
             if ($user && password_verify($password, $user['password'])) {
 
